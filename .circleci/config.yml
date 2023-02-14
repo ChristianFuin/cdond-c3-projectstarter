@@ -179,3 +179,4 @@ workflows:
       - configure-infrastructure:
          requires:
            - deploy-infrastructure
+           #runs afer deploying
