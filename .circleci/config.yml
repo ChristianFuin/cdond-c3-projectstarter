@@ -178,7 +178,7 @@ jobs:
       - run: yum update
       - run: yum install -y tar gzip
       - run: yum install -y python3
-      - run: curl --silent --location https://rpm.nodesource.com/setup_16.x | bash - yum -y install nodejs
+      - run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash . ~/.nvm/nvm.sh nvm install node
       - run: yum install -y ansible
       - run:
           name: Get backend url
