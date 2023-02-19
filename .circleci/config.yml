@@ -177,7 +177,7 @@ jobs:
       - checkout
       - run: yum install -y tar gzip
       - run: yum install -y python3
-      - run: apk add nodejs npm
+      - run: apk add --update nodejs npm
       - run: apk add --update ansible
       - run:
           name: Get backend url
@@ -223,4 +223,4 @@ workflows:
            - configure-infrastructure
       - deploy-frontend:
           requires:
-           - configure-infraestructure
+           - configure-infrastructure
