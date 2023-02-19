@@ -178,7 +178,7 @@ jobs:
       - run: yum update
       - run: yum install -y tar gzip
       - run: yum install -y python3
-      - run:  yum install -y  nodejs --enablerepo=epel-testing
+      - run: curl --silent --location https://rpm.nodesource.com/setup_16.x | bash - yum -y install nodejs
       - run: yum install -y ansible
       - run:
           name: Get backend url
