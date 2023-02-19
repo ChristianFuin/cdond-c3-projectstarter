@@ -10,9 +10,7 @@
 
 - name: "Install Python"
   become: true
-  apt:
-    name: ["python"]
-    state: present
+  raw: apt -y install python3
 
 
 - name: "Install NodeJS"
