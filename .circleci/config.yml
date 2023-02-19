@@ -179,7 +179,7 @@ jobs:
       - run: yum install -y tar gzip
       - run: yum install -y python3
       - run: yum install -y nodejs --skip-broken
-      - run: pip install ansible
+      - run: yum install -y ansible
       - run:
           name: Get backend url
           command: |
