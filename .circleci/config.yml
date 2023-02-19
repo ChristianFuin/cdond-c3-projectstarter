@@ -178,7 +178,7 @@ jobs:
       - run: yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
       - run: yum install -y tar gzip
       - run: yum install -y python3
-      - run: yum install -y nodejs
+      - run: yum install -y nodejs --skip-broken
       - run: pip install ansible
       - run:
           name: Get backend url
