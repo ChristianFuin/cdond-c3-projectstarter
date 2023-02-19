@@ -175,11 +175,10 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - run: yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
       - run: yum install -y tar gzip
       - run: yum install -y python3
-      - run: yum install -y nodejs --skip-broken
-      - run: yum install -y ansible
+      - run: apk add nodejs npm
+      - run: apk add --update ansible
       - run:
           name: Get backend url
           command: |
@@ -222,4 +221,6 @@ workflows:
       - run-migrations:
           requires:
            - configure-infrastructure
-      - deploy-frontend
+      - deploy-frontend:
+          requires:
+           - configure-infraestructure
