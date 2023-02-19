@@ -175,10 +175,11 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run: yum update
       - run: yum install -y tar gzip
       - run: yum install -y python3
-      - run: apk add --update nodejs npm
-      - run: apk add --update ansible
+      - run: yum install -y nodejs 
+      - run: yum install -y ansible
       - run:
           name: Get backend url
           command: |
@@ -223,4 +224,4 @@ workflows:
            - configure-infrastructure
       - deploy-frontend:
           requires:
-           - configure-infrastructure
+           - configure-infraestructure
