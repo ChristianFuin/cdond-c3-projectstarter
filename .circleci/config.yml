@@ -224,4 +224,4 @@ workflows:
            - configure-infrastructure
       - deploy-frontend:
           requires:
-           - configure-infraestructure
+           - configure-infrastructure
