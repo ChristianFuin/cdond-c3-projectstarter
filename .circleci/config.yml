@@ -175,7 +175,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - run: yum install -y epel-release
+      - run: yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
       - run: yum install -y tar gzip
       - run: yum install -y python3
       - run: yum install -y nodejs
