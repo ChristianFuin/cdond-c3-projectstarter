@@ -277,7 +277,7 @@ jobs:
     docker:
       - image: python:3.11-rc-alpine
     steps:
-      - checout
+      - checkout
       - run:
           name: Install dependencies
           command: |
