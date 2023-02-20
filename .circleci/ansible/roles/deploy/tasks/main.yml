@@ -1,43 +1,22 @@
-- name: Update APT Cache
+- name: "update apt packages."
   become: true
   apt:
     update_cache: yes
-    force_apt_get: yes
 
-- name: Remove apt lock file
+- name: "upgrade packages"
   become: true
-  file:
-    state: absent
-    path: "/var/lib/dpkg/lock"
+  apt:
+    upgrade: yes
 
 - name: "removing lock file"
   become: true
   command: rm /var/lib/dpkg/lock-frontend
-
-- name: "removing lock file"
-  become: true
-  command: rm /var/lib/dpkg/lock
-
-- name: "removing lock file"
-  become: true
-  command: rm /var/lib/apt/lists/lock
-
-- name: "removing lock file"
-  become: true
-  command: rm /var/cache/apt/archives/lock
 
 - name: "Install NodeJS"
   become: true
   apt:
     name: ["nodejs"]
     state: latest
-
-- name: "Install NPM"
-  become: true
-  apt:
-    name: ["npm"]
-    state: latest
-
 - name: "Create directory for backend app"
   file:
     path: /home/ubuntu/backend
@@ -55,6 +34,12 @@
   shell: |
     cd /home/ubuntu/web
     tar -xvf artifact.tar.gz
+
+- name: "Install NPM"
+  become: true
+  apt:
+    name: ["npm"]
+    state: latest
 
 - name: "install pm2"
   become: true
