@@ -3,11 +3,6 @@
   apt:
     update_cache: yes
 
-- name: "upgrade packages"
-  become: true
-  apt:
-    upgrade: yes
-
 - name: "removing lock file"
   become: true
   command: rm /var/lib/dpkg/lock-frontend
