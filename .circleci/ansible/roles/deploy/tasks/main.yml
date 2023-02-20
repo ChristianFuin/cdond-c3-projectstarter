@@ -10,13 +10,6 @@
     state: absent
     path: "/var/lib/dpkg/lock"
 
-- name: Upgrade all packages to the latest version
-  become: true
-  apt:
-    name: "*"
-    state: latest
-    force_apt_get: yes
-
 - name: "removing lock file"
   become: true
   command: rm /var/lib/dpkg/lock-frontend
