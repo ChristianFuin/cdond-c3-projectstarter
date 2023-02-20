@@ -3,11 +3,6 @@
   apt:
     update_cache: yes
 
-- name: "upgrade packages"
-  become: true
-  apt:
-    upgrade: yes
-
 - name: "Install Python"
   become: true
   raw: apt -y install python3

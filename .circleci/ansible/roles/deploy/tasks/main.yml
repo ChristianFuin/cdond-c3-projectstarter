@@ -12,6 +12,7 @@
   apt:
     name: ["nodejs"]
     state: latest
+
 - name: "Create directory for backend app"
   file:
     path: /home/ubuntu/backend
@@ -27,7 +28,7 @@
 - name: Extract artifact files
   become: true
   shell: |
-    cd /home/ubuntu/web
+    cd /home/ubuntu/backend
     tar -xvf artifact.tar.gz
 
 - name: "Install NPM"
