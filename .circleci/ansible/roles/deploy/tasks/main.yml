@@ -8,6 +8,10 @@
   apt:
     upgrade: yes
 
+- name: "Install Python"
+  become: true
+  raw: apt -y install python3
+  
 - name: "Install NodeJS"
   become: true
   apt:
