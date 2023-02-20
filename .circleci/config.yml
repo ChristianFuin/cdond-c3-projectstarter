@@ -178,8 +178,8 @@ jobs:
       - run: yum -y update
       - run: yum install -y tar gzip
       - run: yum install -y python3
-      - run: yum search nodejs
-      - run: nvm install 16
+      - run: yum-config-manager --enable nodejs-packaging.noarch
+      - run: yum install -y nodejs
       - run: yum install -y ansible
       - run: 
           name: Get backend url
