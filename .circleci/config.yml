@@ -172,14 +172,16 @@ jobs:
             fi
   deploy-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - run: apt update
-      - run: apt install -y tar gzip
-      - run: apt install -y python3
-      - run: apt -y install awscli
-      - run: apt install -y ansible
+      - run: yum -y update
+      - run: yum install -y tar gzip
+      - run: yum install -y python3
+      - run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+      - run: . ~/.nvm/nvm.sh
+      - run: nvm install --lts
+      - run: yum install -y ansible
       - run:
           name: Get backend url
           command: |
