@@ -31,14 +31,12 @@
   apt:
     name: ["nodejs"]
     state: latest
-    update_cache: yes
 
 - name: "Install NPM"
   become: true
   apt:
     name: ["npm"]
     state: latest
-    update_cache: yes
 
 - name: "Create directory for backend app"
   file:
