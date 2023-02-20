@@ -274,13 +274,17 @@ jobs:
 
   smoke-test:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.11-rc-alpine
     steps:
       - checout
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            apk update
+            apk add aws-cli
+            apk add nodejs
+            apk add npm
+
       - run:
           name: Get backend url
           command: |
