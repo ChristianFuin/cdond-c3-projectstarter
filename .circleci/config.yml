@@ -284,6 +284,7 @@ jobs:
             apk add aws-cli
             apk add nodejs
             apk add npm
+            apk add curl
       - run:
           name: Get backend url
           command: |
