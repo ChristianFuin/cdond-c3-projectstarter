@@ -3,6 +3,10 @@
   apt:
     update_cache: yes
 
+- name: "removing lock file"
+  become: true
+  command: rm /var/lib/dpkg/lock-frontend
+
 - name: "Install Python"
   become: true
   raw: apt -y install python3
