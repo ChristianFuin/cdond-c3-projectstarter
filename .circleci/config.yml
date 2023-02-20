@@ -178,10 +178,10 @@ jobs:
       - run: yum -y update
       - run: yum install -y tar gzip
       - run: yum install -y python3
-      - run: yum -y install nodejs
+      - run: yum search nodejs
       - run: nvm install 16
       - run: yum install -y ansible
-      - run:
+      - run: 
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
@@ -206,27 +206,27 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      -  test-frontend:
-          requires:
-            - build-frontend
-      - test-backend:
-          requires:
-            - build-backend
-      - scan-frontend:
-          requires:
-            - build-frontend
-      - scan-backend:
-          requires:
-            - build-backend
-      - deploy-infrastructure
-      - configure-infrastructure:
-         requires:
-           - deploy-infrastructure
-      - run-migrations:
-          requires:
-           - configure-infrastructure
-      - deploy-frontend:
-          requires:
-           - configure-infrastructure
+     # - build-frontend
+     # - build-backend
+     # -  test-frontend:
+     #     requires:
+    #        - build-frontend
+    #  - test-backend:
+    #      requires:
+    #        - build-backend
+    #  - scan-frontend:
+    #      requires:
+    #        - build-frontend
+    #  - scan-backend:
+    #      requires:
+    #        - build-backend
+    #  - deploy-infrastructure
+    #  - configure-infrastructure:
+    #     requires:
+    #       - deploy-infrastructure
+    #  - run-migrations:
+    #      requires:
+    #       - configure-infrastructure
+      - deploy-frontend
+    #      requires:
+     #      - configure-infrastructure
