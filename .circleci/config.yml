@@ -172,7 +172,7 @@ jobs:
             fi
   deploy-frontend:
     docker:
-      - image: doctrine/nodejs-aws-cli
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run: yum -y update
