@@ -180,7 +180,7 @@ jobs:
       - run: yum install -y python3
       - run: curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
       - run: yum -y install nodejs
-      - run: yum install -y ansible
+      - run: pip install ansible
       - run: 
           name: Get backend url
           command: |
