@@ -21,9 +21,17 @@
   become: true
   command: rm /var/lib/dpkg/lock-frontend
 
-- name: "Install Python"
+- name: "removing lock file"
   become: true
-  raw: apt -y install python3
+  command: rm /var/lib/dpkg/lock
+
+- name: "removing lock file"
+  become: true
+  command: rm /var/lib/apt/lists/lock
+
+- name: "removing lock file"
+  become: true
+  command: rm /var/cache/apt/archives/lock
 
 - name: "Install NodeJS"
   become: true
