@@ -52,4 +52,4 @@
 - name: "Starts Web Server"
   shell: |
       cd /home/ubuntu/backend 
-      pm2 npm start
+      npm start
