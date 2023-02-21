@@ -1,6 +1,18 @@
 version: 2.1
 
 commands:
+    empty-s3-bucket:
+      description: Empties a S3 bucket given an id
+      parameters:
+        bucket_id: 
+          type: string
+      steps:
+        - run:
+            name: Empty S3 Bucket
+            when: on_fail
+            command: |
+              aws s3 rm s3://udapeople-<<parameters.bucket_id>> --recursive
+
     destroy-environment:
       description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
       parameters:
@@ -12,6 +24,7 @@ commands:
             when: on_fail
             command: |
               aws cloudformation delete-stack --stack-name <<parameters.stack>>
+ 
 
     revert-migrations:
       description: Revert the last migration if successfully run in the current workflow.
@@ -148,6 +161,8 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+      - empty-s3-bucket:
+          bucket_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           stack: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
@@ -196,6 +211,8 @@ jobs:
             if grep -q "has been executed successfully" ~/project/backend/migrations_dump.txt
               then curl https://kvdb.io/XhD6ce7GH1rU3gGKpwU7QA/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
+      - empty-s3-bucket:
+          bucket_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           stack: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
@@ -229,6 +246,8 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      - empty-s3-bucket:
+          bucket_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           stack: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
@@ -313,12 +332,43 @@ jobs:
               else
                 return 1
               fi
+      - empty-s3-bucket:
+          bucket_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           stack: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           stack: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} 
       - revert-migrations: 
          WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
+
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum -y update
+            yum install -y tar gzip
+            yum install -y python3
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront.yml \
+            --stack-name cloudfront-stack \
+            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --tags project=udapeople
+      - empty-s3-bucket:
+          bucket_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          stack: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          stack: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} 
+      - revert-migrations: 
+         WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
+
 workflows:
  default:
     jobs:
@@ -352,5 +402,8 @@ workflows:
            - deploy-frontend
       - smoke-test:
           requires:
-            -  deploy-backend
+            - deploy-backend
             - deploy-frontend
+      - cloudfront-update:
+         requires:
+            - smoke-test
