@@ -304,6 +304,7 @@ jobs:
             apk add nodejs
             apk add npm
             apk add curl
+      - run: sleep 60
       - run:
           name: Get backend url
           command: |
@@ -368,6 +369,32 @@ jobs:
           stack: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} 
       - revert-migrations: 
          WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
+cleanup:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Get old stack workflow id
+          command: |
+            export OldWorkflowID=$(aws cloudformation \
+                   list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                  --no-paginate --output text)
+            echo OldWorkflowID: "${OldWorkflowID}"
+            echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+    
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+                    --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            echo Stack names: "${STACKS[@]}"  
+      - run:
+          name: Remove old stacks and files
+          command: |
+            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+            then
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+            fi
 
 workflows:
  default:
@@ -400,10 +427,13 @@ workflows:
           requires:
            - deploy-infrastructure
            - deploy-frontend
-     # - smoke-test:
-     #     requires:
-     #       - deploy-backend
-     #       - deploy-frontend
+      - smoke-test:
+          requires:
+            - deploy-backend
+            - deploy-frontend
       - cloudfront-update:
           requires:
             - deploy-frontend
+      - cleanup:
+         requires:
+          - cloudfront-update
