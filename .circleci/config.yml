@@ -370,7 +370,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths: 
-            - OldWorkflowID.txt
+            - OLD_WORKFLOWID.txt
       - empty-s3-bucket:
           bucket_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
@@ -434,7 +434,6 @@ workflows:
            - configure-infrastructure
       - deploy-backend:
           requires:
-           - deploy-infrastructure
            - deploy-frontend
       - smoke-test:
           requires:
@@ -442,7 +441,7 @@ workflows:
             - deploy-frontend
       - cloudfront-update:
           requires:
-            - deploy-frontend
+            - smoke-test
       - cleanup:
          requires:
           - cloudfront-update
