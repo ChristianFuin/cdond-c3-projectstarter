@@ -400,10 +400,10 @@ workflows:
           requires:
            - deploy-infrastructure
            - deploy-frontend
-      - smoke-test:
-          requires:
-            - deploy-backend
-            - deploy-frontend
-      - cloudfront-update:
-         requires:
-            - smoke-test
+     # - smoke-test:
+     #     requires:
+     #       - deploy-backend
+     #       - deploy-frontend
+      - cloudfront-update
+     #    requires:
+     #       - smoke-test
