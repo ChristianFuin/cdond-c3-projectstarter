@@ -359,6 +359,7 @@ jobs:
               aws cloudformation \
               list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
               --no-paginate --output text > ~/OLD_WORKFLOWID.txt
+              cat ~/OLD_WORKFLOWID.txt
       - run:
           name: Update cloudfront distribution
           command: |
