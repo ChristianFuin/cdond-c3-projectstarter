@@ -393,7 +393,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Remove old stacks and files
+          name: Remove old stacks and deletes bucket
           command: |
             export OLD_WORKFLOWID=$(cat ~/OLD_WORKFLOWID.txt)
             echo $OLD_WORKFLOWID
