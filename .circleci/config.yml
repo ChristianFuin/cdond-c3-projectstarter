@@ -397,9 +397,9 @@ jobs:
           name: Remove old stacks and deletes bucket
           command: |
             export OLD_WORKFLOWID=$(cat ~/OLD_WORKFLOWID.txt)
-            echo $OLD_WORKFLOWID
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OLD_WORKFLOWID}" ]]
             then
+              echo $OLD_WORKFLOWID
               aws s3 rm s3://udapeople-${OLD_WORKFLOWID} --recursive
               aws cloudformation delete-stack --stack-name udapeople-backend-${OLD_WORKFLOWID}
               aws cloudformation delete-stack --stack-name udapeople-frontend-${OLD_WORKFLOWID}
